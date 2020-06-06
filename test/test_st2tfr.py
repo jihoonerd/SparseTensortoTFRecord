@@ -8,7 +8,7 @@ from converter import st2tfr, tfr2tfd
 def test_sparse_tensor_to_tfrecord(remove_output=True):
 
     # Generate very sparse matrix
-    num_samples = 117
+    num_samples = 101
     num_cols = 1000
     
     sparse_mtxs = []
@@ -39,4 +39,12 @@ def test_tfrecord_to_tfrecord_dataset():
 
     test_sparse_tensor_to_tfrecord(remove_output=False)
     assert os.path.exists("test.tfrecord")
-    tfr2tfd("test.tfrecord")
+    dataset = tfr2tfd("test.tfrecord")
+
+    batch_count = 0
+    for minibatch in dataset.batch(10):
+        print(minibatch['sparse_tensor'].numpy().sum())
+        batch_count +=1
+    
+    assert batch_count == 11
+    os.remove("test.tfrecord")

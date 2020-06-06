@@ -63,6 +63,5 @@ def tfr2tfd(tfr_file_name: str) -> TFRecordDataset:
     # Read file from protocol buffer
     dataset = tf.data.TFRecordDataset([tfr_file_name])
     dataset = dataset.map(_parser_st)
-    for minibatch in dataset.batch(10):
-        print(minibatch['sparse_tensor'].numpy().sum())
+    return dataset
 
