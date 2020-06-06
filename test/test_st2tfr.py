@@ -17,6 +17,7 @@ def test_sparse_tensor_to_tfrecord(remove_output=True):
         indices = []
         col_id = list(set(np.random.randint(num_cols, size=(num_cols,))))
         for col_id in sorted(col_id):
+            # IMPORTANT: it needs to be assumed that each sample (row) is independent, which means they all have row indices as 0.
             indices.append([0, col_id])
         
         values = np.ones(len(indices), dtype=np.int8)
